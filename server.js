@@ -6,7 +6,7 @@
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 import express from "express";\
-import puppeteer from "puppeteer";\
+import puppeteer from "puppeteer-core"\
 \
 const app = express();\
 const PORT = process.env.PORT || 8080;\
@@ -29,10 +29,16 @@ app.get("/tuboleta/events", requireKey, async (req, res) => \{\
     return res.status(400).json(\{ error: "missing ?url=" \});\
   \}\
 \
-  const browser = await puppeteer.launch(\{\
-    headless: "new",\
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],\
-  \});\
+  const browser = await puppeteer.launch({
+  headless: "new",
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-gpu"
+  ],
+});
 \
   try \{\
     const page = await browser.newPage();\
