@@ -69,7 +69,7 @@ app.get("/tuboleta/events", requireKey, async (req, res) => {
     page.setDefaultTimeout(30000);
 
     await page.goto(listUrl, { waitUntil: "networkidle2" });
-    await page.waitForTimeout(1500);
+    await new Promise(r => setTimeout(r, 2000));
 
     const events = await page.evaluate(() => {
       const norm = (s) => String(s || "").replace(/\s+/g, " ").trim();
